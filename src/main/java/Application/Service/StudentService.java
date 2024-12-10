@@ -59,6 +59,13 @@ public class StudentService {
      */
     public void assignClassroomToStudent(long studentId, Classroom classroom){
 
+        Optional<Student> studentOptional = studentRepository.findById(studentId);
+        if(studentOptional.isPresent()){
+            Student student = studentOptional.get();
+            student.setClassroom(classroom);
+            studentRepository.save(student);
+        }
+
     }
 
     /**
@@ -69,6 +76,11 @@ public class StudentService {
      * @return the Classroom of the student
      */
     public Classroom getClassroomOfStudent(long studentId){
+        Optional<Student> studentOptional = studentRepository.findById(studentId);
+        if(studentOptional.isPresent()){
+            Student student = studentOptional.get();
+            return student.getClassroom();
+        }
         return null;
     }
 
@@ -79,6 +91,13 @@ public class StudentService {
      * @param studentId Id of a persisted, existing student entity
      */
     public void unassignClassroomOfStudent(long studentId){
-
+        Optional<Student> studentOptional = studentRepository.findById(studentId);
+        if(studentOptional.isPresent()){
+            Student student = studentOptional.get();
+//            lambda expression applied to the collection - this is the same as iterating through the student list
+//            and removing if(student.getId() == studentId)
+            student.setClassroom(null);
+            studentRepository.save(student);
+        }
     }
 }
